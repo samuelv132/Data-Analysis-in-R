@@ -42,7 +42,7 @@ A __confidence interval__ is a range of values used to estimate an unknown popul
 
 The confidence level is typically expressed as a percentage. Typical confidence levels: 90%, 95%, 99%. 
 
-Examples:
+Example 1:
 
 A producer of a medicinal skin cream is interested in the proportion of people of a certain age for whom the cream will improve their skin condition. In a random sample of 68 people, a positive effect was observed in 42 cases. What proportion of people can be expected to see an improvement with this cream, with 99% confidence, in the population?
 
@@ -50,16 +50,31 @@ A producer of a medicinal skin cream is interested in the proportion of people o
 #| echo: false
 #| warning: false
 #| fig-cap: Histogram of qsec
-install.packages("binom")
-library("binom")
+#install.packages("binom")
+#library("binom")
 binom::binom.confint(42, 68, 
                      conf.level = 0.99, 
                      method = "asymptotic")
-
 ```
 
+Example 2:
+Randomly select 100 locations on Earth, checking whether you land on water or land. Based on this, estimate the proportion of land on Earth's surface. Assume a 90% confidence interval.
+
+[Sampling tool](https://bankonomia.nazwa.pl/globe/)
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-cap: Histogram of qsec
+
+#library(binom)
+
+binom::binom.confint(30, 100, 
+                     conf.level = 0.90, 
+                     method = "asymptotic")
 
 
+```
 # 2. Hypothesis Testing Examples
 $$ H_0: p = 0.5 $$
 

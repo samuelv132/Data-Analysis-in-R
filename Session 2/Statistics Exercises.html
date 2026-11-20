@@ -126,6 +126,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#hypothesis-testing-examples" id="toc-hypothesis-testing-examples" class="nav-link" data-scroll-target="#hypothesis-testing-examples">2. Hypothesis Testing Examples</a>
   <ul class="collapse">
+  <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing">Hypothesis testing</a></li>
   <li><a href="#plot-test" id="toc-plot-test" class="nav-link" data-scroll-target="#plot-test">3. Plot test</a></li>
   <li><a href="#latex-formatting-test" id="toc-latex-formatting-test" class="nav-link" data-scroll-target="#latex-formatting-test">LaTeX formatting test</a></li>
   </ul></li>
@@ -188,18 +189,40 @@ window.Quarto = {
 <h1>1. Confidence Intervals</h1>
 <section id="examples" class="level3">
 <h3 class="anchored" data-anchor-id="examples">1.1 Examples</h3>
+<p>A <strong>confidence interval</strong> is a range of values used to estimate an unknown population parameter. It is constructed in such a way that, under appropriate conditions, there is a specified probability – called the <strong>confidence level</strong> – that the interval calculated based on a random sample will contain the true parameter value.</p>
+<p>The confidence level is typically expressed as a percentage. Typical confidence levels: 90%, 95%, 99%.</p>
+<p>Example 1:</p>
+<p>A producer of a medicinal skin cream is interested in the proportion of people of a certain age for whom the cream will improve their skin condition. In a random sample of 68 people, a positive effect was observed in 42 cases. What proportion of people can be expected to see an improvement with this cream, with 99% confidence, in the population?</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>      method  x  n      mean     lower     upper
+1 asymptotic 42 68 0.6176471 0.4658494 0.7694447</code></pre>
+</div>
+</div>
+<p>Example 2: Randomly select 100 locations on Earth, checking whether you land on water or land. Based on this, estimate the proportion of land on Earth’s surface. Assume a 90% confidence interval.</p>
+<p><a href="https://bankonomia.nazwa.pl/globe/">Sampling tool</a></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>      method  x   n mean     lower     upper
+1 asymptotic 30 100  0.3 0.2246233 0.3753767</code></pre>
+</div>
+</div>
 </section>
 </section>
 <section id="hypothesis-testing-examples" class="level1">
 <h1>2. Hypothesis Testing Examples</h1>
 <p><span class="math display">\[ H_0: p = 0.5 \]</span></p>
+<p>Examples:</p>
+<section id="hypothesis-testing" class="level3">
+<h3 class="anchored" data-anchor-id="hypothesis-testing">Hypothesis testing</h3>
+</section>
 <section id="plot-test" class="level3">
 <h3 class="anchored" data-anchor-id="plot-test">3. Plot test</h3>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Statistics-Exercises_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Statistics-Exercises_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption>Histogram of qsec</figcaption>
 </figure>
 </div>
@@ -208,7 +231,7 @@ window.Quarto = {
 </section>
 <section id="latex-formatting-test" class="level3">
 <h3 class="anchored" data-anchor-id="latex-formatting-test">LaTeX formatting test</h3>
-<p><span class="math display">\[ \sigma_X = \sqrt{\frac{\sum_{i=1}^n (x-\mu)^2}{n}}\]</span> Click on render- and</p>
+<p><span class="math display">\[ \sigma_X = \sqrt{\frac{\sum_{i=1}^n (x-\mu)^2}{n}}\]</span> Click on render- and the link should open automatically to publish</p>
 <p>```</p>
 </section>
 </section>
