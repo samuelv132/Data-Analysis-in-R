@@ -1,0 +1,39 @@
+---
+title: "Statistics _Exercises"
+author: "S.V"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+
+
+## **Statistical Inference - To Comment**
+There are 2 main topics in statistical inference 
+[link text](https://www.google.com) #To create links
+
+# 1. Confidence Intervals
+### 1.1 Examples
+toc = TRUE
+# 2. Hypothesis Testing 
+Examples
