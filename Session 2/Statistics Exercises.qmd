@@ -32,17 +32,43 @@ The `echo: false` option disables the printing of code (only output is displayed
 
 There are 2 main topics in statistical inference 
 [link text](https://github.com/blakocha/DAR2026/blob/main/Statistics%20Exercises%20BK.qmd) #To create links
-
+B](https://github.com/blakocha/DAR2026/blob/main/Statistics%20Exercises%20BK.qmd)
 
 # 1. Confidence Intervals
 
 ### 1.1 Examples
 
+A __confidence interval__ is a range of values used to estimate an unknown population parameter. It is constructed in such a way that, under appropriate conditions, there is a specified probability -- called the __confidence level__ -- that the interval calculated based on a random sample will contain the true parameter value.
+
+The confidence level is typically expressed as a percentage. Typical confidence levels: 90%, 95%, 99%. 
+
+Examples:
+
+A producer of a medicinal skin cream is interested in the proportion of people of a certain age for whom the cream will improve their skin condition. In a random sample of 68 people, a positive effect was observed in 42 cases. What proportion of people can be expected to see an improvement with this cream, with 99% confidence, in the population?
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-cap: Histogram of qsec
+install.packages("binom")
+library("binom")
+binom::binom.confint(42, 68, 
+                     conf.level = 0.99, 
+                     method = "asymptotic")
+
+```
+
+
+
 # 2. Hypothesis Testing Examples
 $$ H_0: p = 0.5 $$
 
+
+Examples:
+
+### Hypothesis testing
+
 ### 3. Plot test
-```{r}
 ```{r}
 #| echo: false
 #| warning: false
@@ -55,7 +81,7 @@ ggplot(mtcars, aes(x=qsec))+geom_histogram()
 ### LaTeX formatting test
 
 $$ \sigma_X = \sqrt{\frac{\sum_{i=1}^n (x-\mu)^2}{n}}$$
-
+Click on render- and the link should open automatically to publish
 
 ```
 
