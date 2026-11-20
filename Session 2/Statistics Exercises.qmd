@@ -3,6 +3,8 @@ title: "Statistics _Exercises"
 author: "S.V"
 format: html
 editor: visual
+toc: true
+
 ---
 
 ## Quarto
@@ -26,14 +28,34 @@ You can add options to executable code like this
 
 The `echo: false` option disables the printing of code (only output is displayed).
 
-
-
 ## **Statistical Inference - To Comment**
+
 There are 2 main topics in statistical inference 
-[link text](https://www.google.com) #To create links
+[link text](https://github.com/blakocha/DAR2026/blob/main/Statistics%20Exercises%20BK.qmd) #To create links
+
 
 # 1. Confidence Intervals
+
 ### 1.1 Examples
-toc = TRUE
-# 2. Hypothesis Testing 
-Examples
+
+# 2. Hypothesis Testing Examples
+$$ H_0: p = 0.5 $$
+
+### 3. Plot test
+```{r}
+```{r}
+#| echo: false
+#| warning: false
+#| fig-cap: Histogram of qsec
+library(ggplot2)
+ggplot(mtcars, aes(x=qsec))+geom_histogram()
+
+```
+
+### LaTeX formatting test
+
+$$ \sigma_X = \sqrt{\frac{\sum_{i=1}^n (x-\mu)^2}{n}}$$
+
+
+```
+
