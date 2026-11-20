@@ -75,15 +75,72 @@ binom::binom.confint(30, 100,
 
 
 ```
+Example 3:
+
+Determine the 99-percent confidence intervals for the average travel time of dr. B by bicycle on the route between the university and home based on sample data. 
+
+(https://docs.google.com/spreadsheets/d/1MvyoGcPtW3hUa4iARd2RLM6ahfMBFBYqfzet3K9_6do/edit?gid=1150951672#gid=1150951672)
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-cap: Histogram of qsec
+
+URL <- "https://docs.google.com/spreadsheets/d/1MvyoGcPtW3hUa4iARd2RLM6ahfMBFBYqfzet3K9_6do/edit?gid=1150951672#gid=1150951672"
+library(googlesheets4)
+gs4_deauth()
+data <- read_sheet(URL)
+#names(data)
+time_total <- as.numeric(data$czas)
+
+#for the trip to the university,
+
+hist(time_total)
+
+summary_total <-
+data.frame(
+  length= length(time_total),
+  mean=mean(time_total),
+  Std_Dev = sd(time_total))
+
+print(summary_total)
+#for any trip,
+test_result<-t.test(time_total, conf.level = 0.99)
+print(test_result$conf.int)
+
+#for the return trip from the university
+attach(data)
+hist(time_total[data$kierunek=="naPG"])
+length(time_total[data$kierunek=="naPG"])
+mean(time_total[data$kierunek=="naPG"],na.rm = TRUE)
+sd(time_total[data$kierunek=="naPG"],na.rm = TRUE)
+
+test_result<-t.test(time_total[data$kierunek=="naPG"], conf.level = 0.99)
+print(test_result$conf.int)
+
+#for the trip to the university,
+hist(time_total[data$kierunek=="zPG"])
+length(time_total[data$kierunek=="zPG"])
+mean(time_total[data$kierunek=="zPG"],na.rm = TRUE)
+sd(time_total[data$kierunek=="zPG"],na.rm = TRUE)
+
+test_result<-t.test(time_total[data$kierunek=="zPG"], conf.level = 0.99)
+print(test_result$conf.int)
+detach(data)
+```
 # 2. Hypothesis Testing Examples
+
 $$ H_0: p = 0.5 $$
 
+  
 
 Examples:
 
 ### Hypothesis testing
 
 ### 3. Plot test
+
 ```{r}
 #| echo: false
 #| warning: false
