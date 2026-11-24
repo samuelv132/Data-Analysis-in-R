@@ -219,7 +219,6 @@ View(Avg_KPI_All)
 #KPI split by table and company size
 #=================================================
 
-
 wage_kpi <- df_clean_2 %>%
   group_by(region, year, company_size, metric_type) %>%
   summarise(total = sum(values, na.rm = TRUE), .groups = "drop") %>%
@@ -235,6 +234,14 @@ wage_kpi <- df_clean_2 %>%
 
 View(wage_kpi)
 
+kpi_long <- wage_kpi %>%
+  select(region,year, starts_with("KPI_")) %>%
+  pivot_longer(-c(region,year), names_to = "kpi_type", values_to = "KPI") %>%
+  mutate(KPI = round (abs(KPI),3),
+         year = as.Date(paste0(year,"-01-01"))
+         )
+
+View(kpi_long)
 # Matrix view: regions as rows, years as columns (one per KPI)
 kpi_micro_matrix <- wage_kpi %>%
   select(region, year, KPI_Micro) %>%
@@ -271,6 +278,8 @@ kpi_large_matrix <- wage_kpi %>%
 
 KPI_reg_year_Large<- View(round(kpi_large_matrix, 3), title = "KPI_Large_Reg_Year")
 KPI_reg_year_Large_xl<- round(kpi_large_matrix, 3)
+
+
 #======================================================
 #Descriptive Stats by Metric Type and company size
 #======================================================
@@ -290,11 +299,51 @@ metric_summaries <- df_clean_2 %>%
 # View each metric's table
 View(data.frame(metric_summaries),title="Desc Stats")
 
+#======================================================
+#Correlation Tables
+#======================================================
+#region correl
+cor_regions_micro <- round(cor(t(KPI_reg_year_micro_xl), use = "complete.obs"), 2)
+cor_regions_small <- round(cor(t(KPI_reg_year_Small_xl), use = "complete.obs"),2)
+cor_regions_medium <- round(cor(t(KPI_reg_year_Medium_xl), use = "complete.obs"),2)
+cor_regions_large <- round(cor(t(KPI_reg_year_Large_xl), use = "complete.obs"),2)
+
+library(tibble)
+cor_bet_regions <- bind_rows(
+  as.data.frame(cor_regions_micro) %>% rownames_to_column("region") %>% mutate(company_size = "Micro"),
+  as.data.frame(cor_regions_small) %>% rownames_to_column("region") %>% mutate(company_size = "Small"),
+  as.data.frame(cor_regions_large) %>% rownames_to_column("region") %>% mutate(company_size = "Large")
+) %>%
+  select(company_size, region, everything())
+  
+#View(cor_bet_regions)
+
+#Time trend correl per region
+
+years_1 <- as.numeric(colnames(KPI_reg_year_micro_xl))
+cor_trend_micro <- round(apply(KPI_reg_year_micro_xl, 1, function(row_vals) {cor(years_1, row_vals, use = "complete.obs")}),3)
+cor_trend_micro
+
+years_2 <- as.numeric(colnames(KPI_reg_year_Small_xl))
+cor_trend_small <- round(apply(KPI_reg_year_Small_xl, 1, function(row_vals) {cor(years_2, row_vals, use = "complete.obs")}),3)
+cor_trend_small
+
+years_3 <- as.numeric(colnames(KPI_reg_year_Large_xl))
+cor_trend_large <- round(apply(KPI_reg_year_Large_xl, 1, function(row_vals) {cor(years_3, row_vals, use = "complete.obs")}),3)
+cor_trend_large
+
+time_trend_cor_bet_regions <- 
+  data.frame(
+  region = names(cor_trend_micro),
+  Micro  = cor_trend_micro,
+  Small  = cor_trend_small,
+  Large  = cor_trend_large,
+  row.names = NULL)
+
+View(time_trend_cor_bet_regions)
 #__________________________________________________________________________
 
 detach(df_clean_2)
-
-
 #__________________________________________________________________________
 
 library(writexl)
@@ -310,21 +359,66 @@ metric_combined <- bind_rows(
 
 sheets <- list(
   "Desc_Stats"    = metric_combined,
+  "Corr_bet_regions" = cor_bet_regions,
+  "Time_Tr_Cor_bet_reg" = time_trend_cor_bet_regions,
   Avg_Wage_All        = Avg_Wage_All,
   Avg_KPI_All         = Avg_KPI_All,
   KPI_reg_year_micro  = KPI_reg_year_micro_xl,
   KPI_reg_year_Small  = KPI_reg_year_Small_xl,
   KPI_reg_year_Medium = KPI_reg_year_Medium_xl,
-  KPI_reg_year_Large  = KPI_reg_year_Large_xl
+  KPI_reg_year_Large  = KPI_reg_year_Large_xl ,
+  "Data for 3d Maps" = kpi_long
 )
 
+#View(kpi_long)
 
+to_df <- function(x) {
+  if (is.matrix(x)) {
+    tibble::rownames_to_column(as.data.frame(x), var = "region")
+  } else {
+    as.data.frame(x)}}
+
+
+names(sheets)
 sheets <- lapply(sheets, to_df)
-write.xlsx(sheets, file = out_path, colWidths = "auto",
-           headerStyle = createStyle(textDecoration = "bold"))
+
+# write.xlsx(sheets, file = out_path, colWidths = "auto",
+#            headerStyle = createStyle(textDecoration = "bold"))
+
+headerStyle <- createStyle(textDecoration = "bold")
+
+#1  without new worksheets added
+# for (s in names(sheets)) {
+#   writeData(wb, s, sheets[[s]], headerStyle = headerStyle)
+#   setColWidths(wb, s, cols = 1:ncol(sheets[[s]]), widths = "auto")
+# }
+
+# #2 Without creating a new file 
+# temp_path <- tempfile(fileext = ".xlsx")
+# 
+# wb <- loadWorkbook(out_path)
+# for (s in names(sheets)) {
+#   if (!(s %in% names(wb))) addWorksheet(wb, s)
+#   writeData(wb, s, sheets[[s]], headerStyle = headerStyle)
+#   setColWidths(wb, s, cols = seq_len(ncol(sheets[[s]])), widths = "auto")
+# }
+# 
+# saveWorkbook(wb, temp_path, overwrite = TRUE)
+# file.copy(temp_path, out_path, overwrite = TRUE)
 
 
-?write.xlsx(sheets, file = out_path, colWidths = "auto")
+#3
+wb <- if (file.exists(out_path)) loadWorkbook(out_path) else createWorkbook()
+
+for (s in names(sheets)) {
+  if (!(s %in% names(wb))) addWorksheet(wb, s)
+  
+  writeData(wb, s, sheets[[s]], headerStyle = headerStyle)
+  setColWidths(wb, s, cols = seq_len(ncol(sheets[[s]])), widths = "auto")
+}
+
+saveWorkbook(wb, out_path, overwrite = TRUE)
+#_____________________________________________________________________
 
 
 
