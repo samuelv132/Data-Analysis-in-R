@@ -122,7 +122,7 @@ df_gross_wages_clean$metric_type <- "Gross Wages"
 
 #______________________________________________________________________
 
-#Variable 4- Total Revenues
+#Variable 4- Total Revenues - To check if it is being used 
 
 df_total_revenues_raw <- get_data_by_variable(
   varId = c("386721","386716","386711","498849","386706","386701"), # Replace with your actual IDs
